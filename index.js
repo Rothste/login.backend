@@ -22,22 +22,16 @@ app.use(express.json());
 app.post('/player/login/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/html/dashboard.html');
 });
-
-app.post('/player/growid/login/validate', (req, res) => {
-    // Extracting data from the request body
-    const _token = req.body._token;
+app.post("/player/growid/login/validate", (req, res) => {
     const growId = req.body.growId;
     const password = req.body.password;
-
-    const token = Buffer.from(
-        `_token=${_token}&growId=${growId}&password=${password}`,
-    ).toString('base64');
-
-    res.send(
-        `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
-    );
+    const token = Buffer.from(`tankIDName|${growId}\ntankIDPass|${password}\nAccess|1`,).toString("base64");
+    res.send(`{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,);
 });
-
+app.post("/player/growid/register/validate", (req, res) => {
+    const token = Buffer.from(`Access|2`,).toString("base64");
+    res.send(`{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,);
+});
 app.post('/player/validate/close', function (req, res) {
     res.send('<script>window.close();</script>');
 });
